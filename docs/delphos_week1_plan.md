@@ -34,28 +34,25 @@ mostly bootstrabbed by cargo and uv.
 
 ```
 delphos/
-├── rust/              # Rust workspace
-│   ├── orchestrator/  # Main orchestration
-│   │   ├── Cargo.toml
-│   │   └── src/
-│   └── ebpf-tracer/   # eBPF instrumentation (Week 2)
-├── python/            # Python components
-│   ├── ai_generator/  # LLM integration
-│   │   ├── __init__.py
-│   │   ├── generator.py
-│   │   └── doc_parser.py
-│   └── analyzer/      # Result analysis
-│       └── __init__.py
-├── pyproject.toml     # Python dependencies (uv managed)
-├── uv.lock            # Locked dependencies
-├── scripts/           # Helper scripts
-│   ├── run_demo.sh
-│   └── trace_fileops.bt
+├── generator/        # test generation
+│   ├── __init__.py
+│   ├── llm.py        # LLM integration
+│   ├── doc_parser.py 
+├── orchestrator/      # Test execution engine
+│   ├── Cargo.toml
+│   ├── Cargo.lock
+│   └── src/
+│       └── main.rs
+├── analyzer/          # Result analysis
+│   └── __init__.py
+├── tracer/            # eBPF tracing scripts
+│   └── fileops.bt    
 ├── docs/              # Documentation
-│   ├── daily_log.org  # Org-mode daily log
-│   ├── architecture.md
-│   └── week1_retrospective.md
+│   ├── delphos_week1_plan.mdd
 ├── tests/             # Integration tests
+├── pyproject.toml     # Python dependencies (uv managed)
+├── uv.lock
+├── main.py
 ├── scenarios.json     # Generated test scenarios
 ├── results.json       # Test execution results
 └── README.md

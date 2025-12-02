@@ -8,13 +8,14 @@ __pycache__/
 .pytest_cache/
 
 # Rust
-rust/target/
-Cargo.lock
+orchestrator/target/
+orchestrator/Cargo.lock
 
 # Generated files
 scenarios.json
 results.json
-trace.log
+trace.log*
+test_scenario
 
 # Editor
 .vscode/

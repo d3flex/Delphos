@@ -1,6 +1,7 @@
 """Test scenario generator using LLM for Delphos."""
 import ollama
 import json
+from textwrap import dedent
 
 
 def generate_test_scenarios(syscall_name: str, num_scenarios: int = 5) -> list:
@@ -13,29 +14,30 @@ def generate_test_scenarios(syscall_name: str, num_scenarios: int = 5) -> list:
     Returns:
         List of test scenario dictionaries
     """
-    prompt = f"""You are a Linux kernel testing expert. Generate {num_scenarios} test scenarios 
-for the {syscall_name} syscall.
+    prompt = dedent(f"""
+        You are a Linux kernel testing expert. Generate {num_scenarios} test scenarios
+        for the {syscall_name} syscall.
 
-For each scenario, provide:
-- id: A unique identifier (e.g., "test_001")
-- description: What the test does
-- expected_result: "success" or "error"
-- expected_errno: The errno if error (e.g., "ENOENT"), or null if success
+        For each scenario, provide:
+        - id: A unique identifier (e.g., "t001")
+        - description: What the test does
+        - expected_result: "success" or "error"
+        - expected_errno: The errno if error (e.g., "ENOENT"), or null if success
 
-Return ONLY a valid JSON array, no other text.
-Example format:
-[
-  {{
-    "id": "test_001",
-    "description": "Open existing file read-only",
-    "expected_result": "success",
-    "expected_errno": null
-  }}
-]
-"""
+        Return ONLY a valid JSON array, no other text.
+        Example format:
+        [
+          {{
+            "id": "t001",
+            "description": "Open existing file read-only",
+            "expected_result": "success",
+            "expected_errno": null
+          }}
+        ]
+    """).strip()
     
     response = ollama.chat(
-        model='llama3.1:8b',
+        model='llama3.2:3b',
         messages=[{'role': 'user', 'content': prompt}]
     )
     
@@ -43,6 +45,7 @@ Example format:
     content = response['message']['content']
     
     # Try to parse as JSON
+    
     try:
         # Remove markdown code blocks if present
         if '```json' in content:
@@ -59,7 +62,8 @@ Example format:
 
 
 if __name__ == "__main__":
-    # Quick test
     print("Generating test scenarios for 'open' syscall...")
     scenarios = generate_test_scenarios("open", 3)
+    with open("test_scenario", "w") as test_scenarios:
+        json.dump(scenarios, test_scenarios, indent=2)
     print(json.dumps(scenarios, indent=2))

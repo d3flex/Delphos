@@ -41,4 +41,32 @@ As part of the HackWeek, the goal is to have a basic eBPF tracing for one syscal
 A risk plan, at least for the first week, can be found in [docs/delphos_week1_plan.md](docs/delphos_week1_plan.md)
 
 ## How to use
-TBD
+
+```rust
+cargo run
+```
+
+```python3
+❯ uv run python python/ai_generator/generator.py
+Generating test scenarios for 'open' syscall...
+[
+  {
+    "id": "test_001",
+    "description": "Open existing file read-only",
+    "expected_result": "success",
+    "expected_errno": null
+  },
+  {
+    "id": "test_002",
+    "description": "Create new directory",
+    "expected_result": "success",
+    "expected_errno": null
+  },
+  {
+    "id": "test_003",
+    "description": "Open non-existent file",
+    "expected_result": "error",
+    "expected_errno": "ENOENT"
+  }
+]
+```

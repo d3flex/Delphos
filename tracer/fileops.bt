@@ -1,0 +1,32 @@
+#!/usr/bin/env bpftrace
+/*
+ * Trace openat syscalls for a specific PID
+ * Usage: sudo bpftrace fileops.bt PID
+ * The orchestrator will pass its own PID when starting the trace
+ */
+
+BEGIN {
+    if ($1 == 0) {
+        printf("ERROR: Must provide PID\n");
+        printf("Usage: sudo bpftrace fileops.bt <PID>\n");
+        exit();
+    }
+    printf("Tracing openat syscalls for PID %d... Hit Ctrl-C to end.\n", $1);
+    printf("Timestamp | PID | Event | Details\n");
+    printf("=================================================================\n");
+}
+
+tracepoint:syscalls:sys_enter_openat
+/ pid == $1 /
+{
+    printf("%lu | [%d] | ENTER | openat(filename=%s, flags=0x%x)\n",
+           nsecs, pid, str(args->filename), args->flags);
+}
+
+tracepoint:syscalls:sys_exit_openat
+/ pid == $1 /
+{
+    printf("%lu | [%d] | EXIT  | openat() = %d %s\n",
+           nsecs, pid, args->ret,
+           args->ret < 0 ? "(error)" : "(success)");
+}
