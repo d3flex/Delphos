@@ -64,6 +64,6 @@ def generate_test_scenarios(syscall_name: str, num_scenarios: int = 5) -> list:
 if __name__ == "__main__":
     print("Generating test scenarios for 'open' syscall...")
     scenarios = generate_test_scenarios("open", 3)
-    with open("test_scenario", "w") as test_scenarios:
+    with open("test_scenarios.json", "w") as test_scenarios:
         json.dump(scenarios, test_scenarios, indent=2)
     print(json.dumps(scenarios, indent=2))
