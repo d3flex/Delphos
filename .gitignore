@@ -1,0 +1,29 @@
+cat > .gitignore << 'EOF'
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Rust
+rust/target/
+Cargo.lock
+
+# Generated files
+scenarios.json
+results.json
+trace.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+EOF

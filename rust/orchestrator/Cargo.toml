@@ -1,0 +1,10 @@
+[package]
+name = "delphos-orchestrator"
+version = "0.1.0"
+edition = "2021" # "2024" also available but 2021 more tutorials??!
+ 
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+libc = "0.2"
+anyhow = "1"
