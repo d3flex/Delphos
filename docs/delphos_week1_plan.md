@@ -1,9 +1,12 @@
 # Week 1 Planning: AI-Augmented Kernel Testing Framework MVP
+**Deprecated and the implementation is restructured or changed in some places**
 
-**Project Name:** Delphos  
-**Goal:** Build a minimal viable prototype that demonstrates AI-augmented testing for Linux kernel syscalls  
-**Timeline:** 5 days  
-**Developer:** Solo project, part-time effort (~3-4 hours/day)  
+> **See:** [README.md](../README.md) for current usage
+> **See:** Current code for actual implementation details
+
+**Project Name:** Delphos
+**Goal:** Build a minimal viable prototype that demonstrates AI-augmented testing for Linux kernel syscalls
+**Timeline:** 5 days
 **Note:** Developer is learning Rust basics during this project
 
 ---
@@ -18,6 +21,10 @@ By the end of week 1, we will have:
 4. ✅ 5-10 executable test cases for a single syscall family
 5. ✅ Simple pass/fail validation mechanism
 6. ✅ End-to-end demo working on local machine
+
+**Bonus achievements (exceeded Week 1 scope):**
+- ✅ Modular source architecture (Strategy pattern)
+- ✅ Subcommand CLI (generate/run separation)
 
 **Non-goals for Week 1:**
 - Vector database integration (defer to Week 2)
@@ -183,15 +190,18 @@ delphos/
    - Practice: Write simple program that reads JSON file
 
 2. Complete Python test generator
+
+   > **outdated - see current implementation in `generator/sources/manpages.py`**
+
    ```python
    # python/ai_generator/generator.py
    import ollama
    import subprocess
    import json
-   
+
    def get_syscall_docs(syscall_name):
        """Extract relevant sections from man page"""
-       result = subprocess.run(['man', '2', syscall_name], 
+              result = subprocess.run(['man', '2', syscall_name],
                                capture_output=True, text=True)
        return parse_man_page(result.stdout)
    
@@ -524,16 +534,20 @@ We can confidently say Week 1 is complete when:
 
 At the end of Week 1, we should be able to answer YES to:
 
-- [ ] Can we generate test scenarios using LLM from syscall documentation?
-- [ ] Can we execute those scenarios and get results?
-- [ ] Can we capture runtime behavior with eBPF?
-- [ ] Does the end-to-end pipeline work?
-- [ ] Did we find at least one interesting test case we wouldn't have thought of manually?
+- [x] Can we generate test scenarios using LLM from syscall documentation? **YES**
+- [x] Can we execute those scenarios and get results? **YES**
+- [x] Can we capture runtime behavior with eBPF? **YES**
+- [x] Does the end-to-end pipeline work? **YES**
+- [x] Did we find at least one interesting test case we wouldn't have thought of manually? **YES**
 
 **Stretch Goals (if time permits):**
 - [ ] Test 2 syscall families instead of 1
 - [ ] Add ChromaDB integration (basic)
 - [ ] Create simple web UI for viewing results
+
+**Additional Achievements:**
+- [x] Modular architecture with Strategy pattern
+- [x] Clean CLI with generate/run subcommands
 
 ---
 
@@ -591,10 +605,10 @@ At the end of Week 1, we should be able to answer YES to:
 - Note: Can test on host system with file operations (low risk)
 
 ### Software
-- Ubuntu 24.04 or similar (for eBPF support)
-- Rust toolchain: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-- Python 3.10+
-- **uv** (modern Python package manager): `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- openSUSE TW or similar (for eBPF support)
+- Rust toolchain: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` or rpm packages from the package manager
+- Python 3.13+
+- **uv** (modern Python package manager): `curl -LsSf https://astral.sh/uv/install.sh | sh` or rpm packages from the package manager
   - Replaces pip/virtualenv with faster, more reliable tooling
   - Automatic lockfile management
   - See: https://github.com/astral-sh/uv
