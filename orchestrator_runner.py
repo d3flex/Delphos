@@ -46,21 +46,11 @@ class OrchestratorRunner:
         results_file: Path,
         capture_output: bool = False
     ) -> Optional[subprocess.CompletedProcess]:
-        """Run the orchestrator.
-
-        Args:
-            scenarios_file: Path to scenarios JSON file
-            results_file: Path to output results JSON file
-            capture_output: Capture stdout/stderr
-
-        Returns:
-            CompletedProcess if successful, None otherwise
-        """
         cmd = [
             "cargo", "run",
             "--",
-            str(scenarios_file),
-            str(results_file)
+            str(scenarios_file.absolute()),
+            str(results_file.absolute())
         ]
 
         if self.release:
