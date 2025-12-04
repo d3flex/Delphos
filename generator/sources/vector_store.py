@@ -2,7 +2,6 @@ from .base import DocumentSource
 
 
 class VectorStoreSource(DocumentSource):
-
     def fetch(self, query: str) -> str:
         # TODO: Implement vector DB queries (ChromaDB/Pinecone)
         return ""

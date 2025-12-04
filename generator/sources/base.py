@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class DocumentSource(ABC):
-
     @abstractmethod
     def fetch(self, query: str) -> str:
         pass

@@ -4,7 +4,9 @@ from textwrap import dedent
 from .context_builder import ContextBuilder
 
 
-def generate_test_scenarios(syscall_name: str, num_scenarios: int = 5, model: str = "llama3.2:3b") -> list:
+def generate_test_scenarios(
+    syscall_name: str, num_scenarios: int = 5, model: str = "llama3.2:3b"
+) -> list:
     builder = ContextBuilder()
     context = builder.build_context(syscall_name)
 
@@ -42,18 +44,15 @@ def generate_test_scenarios(syscall_name: str, num_scenarios: int = 5, model: st
         ]
     """).strip()
 
-    response = ollama.chat(
-        model=model,
-        messages=[{'role': 'user', 'content': prompt}]
-    )
+    response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
 
-    content = response['message']['content']
+    content = response["message"]["content"]
 
     try:
-        if '```json' in content:
-            content = content.split('```json')[1].split('```')[0]
-        elif '```' in content:
-            content = content.split('```')[1].split('```')[0]
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0]
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0]
 
         scenarios = json.loads(content.strip())
         return scenarios

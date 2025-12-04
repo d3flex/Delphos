@@ -2,7 +2,6 @@ from .base import DocumentSource
 
 
 class BugCommitSource(DocumentSource):
-
     def fetch(self, query: str) -> str:
         # TODO: Implement git commit history analysis
         return ""

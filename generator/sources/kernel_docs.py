@@ -2,7 +2,6 @@ from .base import DocumentSource
 
 
 class KernelDocsSource(DocumentSource):
-
     def fetch(self, query: str) -> str:
         # TODO: Implement kernel.org documentation fetching
         return ""

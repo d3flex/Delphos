@@ -1,4 +1,5 @@
 """Runner for the Rust orchestrator."""
+
 import subprocess
 from pathlib import Path
 from typing import Optional
@@ -28,10 +29,7 @@ class OrchestratorRunner:
             cmd.append("--release")
 
         result = subprocess.run(
-            cmd,
-            cwd=self.orchestrator_dir,
-            capture_output=True,
-            text=True
+            cmd, cwd=self.orchestrator_dir, capture_output=True, text=True
         )
 
         if result.returncode != 0:
@@ -41,26 +39,21 @@ class OrchestratorRunner:
         return True
 
     def run(
-        self,
-        scenarios_file: Path,
-        results_file: Path,
-        capture_output: bool = False
+        self, scenarios_file: Path, results_file: Path, capture_output: bool = False
     ) -> Optional[subprocess.CompletedProcess]:
         cmd = [
-            "cargo", "run",
+            "cargo",
+            "run",
             "--",
             str(scenarios_file.absolute()),
-            str(results_file.absolute())
+            str(results_file.absolute()),
         ]
 
         if self.release:
             cmd.insert(2, "--release")
 
         result = subprocess.run(
-            cmd,
-            cwd=self.orchestrator_dir,
-            capture_output=capture_output,
-            text=True
+            cmd, cwd=self.orchestrator_dir, capture_output=capture_output, text=True
         )
 
         if result.returncode != 0:

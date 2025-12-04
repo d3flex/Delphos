@@ -2,7 +2,6 @@ from .base import DocumentSource
 
 
 class CVEDatabaseSource(DocumentSource):
-
     def fetch(self, query: str) -> str:
         # TODO: Implement CVE database fetching (NVD, Mitre, etc.)
         return ""

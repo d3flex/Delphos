@@ -6,14 +6,13 @@ from .sources.vector_store import VectorStoreSource
 
 
 class ContextBuilder:
-
     def __init__(self):
         self.sources = {
-            'manpages': ManPageSource(),
-            'cve_db': CVEDatabaseSource(),
-            'kernel_docs': KernelDocsSource(),
-            'bug_commits': BugCommitSource(),
-            'vector_store': VectorStoreSource(),
+            "manpages": ManPageSource(),
+            "cve_db": CVEDatabaseSource(),
+            "kernel_docs": KernelDocsSource(),
+            "bug_commits": BugCommitSource(),
+            "vector_store": VectorStoreSource(),
         }
 
     def build_context(self, syscall_name: str) -> dict:

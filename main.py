@@ -27,9 +27,7 @@ def cmd_generate(args, config):
 
     try:
         scenarios = generate_test_scenarios(
-            args.target,
-            config.num_scenarios,
-            config.llm_model
+            args.target, config.num_scenarios, config.llm_model
         )
 
         if not scenarios:
@@ -37,13 +35,14 @@ def cmd_generate(args, config):
             return 1
 
         valid_scenarios = [
-            s for s in scenarios
-            if scenario_manager.validate_scenario(s)
+            s for s in scenarios if scenario_manager.validate_scenario(s)
         ]
 
         if len(valid_scenarios) != len(scenarios):
-            print(f"WARNING: {len(scenarios) - len(valid_scenarios)} "
-                  f"invalid scenarios filtered out")
+            print(
+                f"WARNING: {len(scenarios) - len(valid_scenarios)} "
+                f"invalid scenarios filtered out"
+            )
 
         scenario_manager.save_scenarios(valid_scenarios)
 
@@ -60,6 +59,7 @@ def cmd_generate(args, config):
     except Exception as e:
         print(f"ERROR: Failed to generate scenarios: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
 
@@ -75,10 +75,7 @@ def cmd_run(args, config):
         print("Run 'python main.py generate' first to generate test scenarios")
         return 1
 
-    orchestrator = OrchestratorRunner(
-        config.orchestrator_dir,
-        config.build_release
-    )
+    orchestrator = OrchestratorRunner(config.orchestrator_dir, config.build_release)
 
     print("[1/2] Building Rust orchestrator...")
     if not orchestrator.build():
@@ -89,9 +86,7 @@ def cmd_run(args, config):
 
     print("[2/2] Executing test scenarios...")
     result = orchestrator.run(
-        config.scenarios_file,
-        config.results_file,
-        capture_output=False
+        config.scenarios_file, config.results_file, capture_output=False
     )
 
     if result is None:
@@ -123,53 +118,41 @@ def cmd_run(args, config):
 def main():
     parser = argparse.ArgumentParser(
         description="Delphos - AI-Augmented Testing Framework",
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
 
-    generate_parser = subparsers.add_parser(
-        "generate",
-        help="Generate test scenarios"
+    generate_parser = subparsers.add_parser("generate", help="Generate test scenarios")
+    generate_parser.add_argument(
+        "target", help="Target to test (e.g., 'open', 'read', 'write')"
     )
     generate_parser.add_argument(
-        "target",
-        help="Target to test (e.g., 'open', 'read', 'write')"
+        "--environment", help="Environment info (e.g., 'kernel-6.5', 'glibc-2.38')"
     )
     generate_parser.add_argument(
-        "--environment",
-        help="Environment info (e.g., 'kernel-6.5', 'glibc-2.38')"
-    )
-    generate_parser.add_argument(
-        "--model",
-        default="llama3.2:3b",
-        help="LLM model to use (default: llama3.2:3b)"
+        "--model", default="llama3.2:3b", help="LLM model to use (default: llama3.2:3b)"
     )
     generate_parser.add_argument(
         "--scenarios",
         type=int,
         default=5,
-        help="Number of test scenarios to generate (default: 5)"
+        help="Number of test scenarios to generate (default: 5)",
     )
 
-    run_parser = subparsers.add_parser(
-        "run",
-        help="Execute test scenarios"
-    )
+    run_parser = subparsers.add_parser("run", help="Execute test scenarios")
     run_parser.add_argument(
         "--scenarios-file",
         default="test_scenarios.json",
-        help="Path to scenarios file (default: test_scenarios.json)"
+        help="Path to scenarios file (default: test_scenarios.json)",
     )
     run_parser.add_argument(
-        "--release",
-        action="store_true",
-        help="Build orchestrator in release mode"
+        "--release", action="store_true", help="Build orchestrator in release mode"
     )
     run_parser.add_argument(
         "--trace-log",
         default="trace.log",
-        help="Path to trace log file (default: trace.log)"
+        help="Path to trace log file (default: trace.log)",
     )
 
     args = parser.parse_args()
@@ -179,11 +162,11 @@ def main():
         return 1
 
     config = DelphosConfig(
-        llm_model=getattr(args, 'model', 'llama3.2:3b'),
-        num_scenarios=getattr(args, 'scenarios', 5),
-        scenarios_file=Path(getattr(args, 'scenarios_file', 'test_scenarios.json')),
-        trace_log=Path(getattr(args, 'trace_log', 'trace.log')),
-        build_release=getattr(args, 'release', False)
+        llm_model=getattr(args, "model", "llama3.2:3b"),
+        num_scenarios=getattr(args, "scenarios", 5),
+        scenarios_file=Path(getattr(args, "scenarios_file", "test_scenarios.json")),
+        trace_log=Path(getattr(args, "trace_log", "trace.log")),
+        build_release=getattr(args, "release", False),
     )
 
     if args.command == "generate":
