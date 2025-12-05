@@ -28,9 +28,7 @@ class Runner:
         if self.release:
             cmd.append("--release")
 
-        result = subprocess.run(
-            cmd, cwd=self.delph_dir, capture_output=True, text=True
-        )
+        result = subprocess.run(cmd, cwd=self.delph_dir, capture_output=True, text=True)
 
         if result.returncode != 0:
             print(f"Build failed:\n{result.stderr}")

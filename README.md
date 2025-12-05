@@ -59,6 +59,7 @@ This will:
 **Options:**
 - `--model`: LLM model to use (default: `llama3.2:3b`)
 - `--scenarios`: Number of scenarios to generate (default: 5)
+- `--test-type`: Test type (e.g., `syscall`, `procfs`, `sysfs`) (default: `syscall`)
 - `--environment`: Target environment (e.g., `kernel-6.5`, `glibc-2.38`)
 
 **Examples:**
@@ -71,6 +72,9 @@ python main.py generate open --model llama3.1:8b
 
 # Specify environment
 python main.py generate write --environment kernel-6.5
+
+# Test procfs targets
+python main.py generate /proc/meminfo --test-type procfs --scenarios 5
 ```
 
 ### 2. Run test scenarios

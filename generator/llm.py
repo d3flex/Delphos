@@ -5,28 +5,36 @@ from .context_builder import ContextBuilder
 
 
 def generate_test_scenarios(
-    syscall_name: str, num_scenarios: int = 5, model: str = "llama3.2:3b"
+    target: str,
+    num_scenarios: int = 5,
+    model: str = "llama3.2:3b",
+    test_type: str = "syscall",
 ) -> list:
     builder = ContextBuilder()
-    context = builder.build_context(syscall_name)
+    context = builder.build_context(target)
 
     context_text = ""
     for source_name, data in context.items():
         context_text += f"\n=== {source_name.upper()} ===\n{data}\n"
 
     if not context_text:
-        context_text = f"No documentation available for {syscall_name}"
+        context_text = f"No documentation available for {target}"
+
+    context_description = "syscall" if test_type == "syscall" else f"{test_type} target"
 
     prompt = dedent(f"""
         You are a Linux kernel testing expert. Generate {num_scenarios} test scenarios
-        for the {syscall_name} syscall.
+        for the {target} {context_description}.
 
         Available Context:
         {context_text}
 
         For each scenario, provide:
-        - id: A unique identifier (e.g., "t001")
+        - id: A unique identifier (e.g., "t001", "t002")
         - description: What the test does
+        - test_type: Type of test - use "{test_type}"
+        - target: The target name (e.g., "{target}")
+        - params: JSON object with test parameters (path, flags, fd, count, etc.)
         - expected_result: "success" or "error"
         - expected_errno: The errno if error (e.g., "ENOENT"), or null if success
 
@@ -37,9 +45,27 @@ def generate_test_scenarios(
         [
           {{
             "id": "t001",
-            "description": "Test for {syscall_name} syscall",
+            "description": "Open existing file read-only",
+            "test_type": "{test_type}",
+            "target": "{target}",
+            "params": {{
+              "path": "/etc/passwd",
+              "flags": "O_RDONLY"
+            }},
             "expected_result": "success",
             "expected_errno": null
+          }},
+          {{
+            "id": "t002",
+            "description": "Open non-existent file",
+            "test_type": "{test_type}",
+            "target": "{target}",
+            "params": {{
+              "path": "/nonexistent/file",
+              "flags": "O_RDONLY"
+            }},
+            "expected_result": "error",
+            "expected_errno": "ENOENT"
           }}
         ]
     """).strip()
@@ -64,7 +90,9 @@ def generate_test_scenarios(
 
 if __name__ == "__main__":
     print("Generating test scenarios for 'open' syscall...")
-    scenarios = generate_test_scenarios("open", 3)
+    scenarios = generate_test_scenarios(
+        target="open", num_scenarios=3, test_type="syscall"
+    )
     with open("test_scenarios.json", "w") as test_scenarios:
         json.dump(scenarios, test_scenarios, indent=2)
     print(json.dumps(scenarios, indent=2))

@@ -16,6 +16,7 @@ def cmd_generate(args, config):
     print("=" * 60)
     print()
     print(f"Target: {args.target}")
+    print(f"Test Type: {args.test_type}")
     print(f"Environment: {args.environment or 'auto-detect'}")
     print(f"Model: {config.llm_model}")
     print(f"Scenarios: {config.num_scenarios}")
@@ -27,7 +28,7 @@ def cmd_generate(args, config):
 
     try:
         scenarios = generate_test_scenarios(
-            args.target, config.num_scenarios, config.llm_model
+            args.target, config.num_scenarios, config.llm_model, args.test_type
         )
 
         if not scenarios:
@@ -85,9 +86,7 @@ def cmd_run(args, config):
     print()
 
     print("[2/2] Executing test scenarios...")
-    result = delph.run(
-        config.scenarios_file, config.results_file, capture_output=False
-    )
+    result = delph.run(config.scenarios_file, config.results_file, capture_output=False)
 
     if result is None:
         print("ERROR: Test execution failed")
@@ -138,6 +137,11 @@ def main():
         type=int,
         default=5,
         help="Number of test scenarios to generate (default: 5)",
+    )
+    generate_parser.add_argument(
+        "--test-type",
+        default="syscall",
+        help="Test type (e.g., 'syscall', 'procfs', 'sysfs', 'module', 'netlink') (default: syscall)",
     )
 
     run_parser = subparsers.add_parser("run", help="Execute test scenarios")
