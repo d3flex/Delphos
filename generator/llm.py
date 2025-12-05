@@ -29,16 +29,23 @@ def generate_test_scenarios(
         Available Context:
         {context_text}
 
+        IMPORTANT CONSTRAINTS - Tests will run as a non-root user:
+        - Use /tmp/ for writable paths (e.g., /tmp/test_file)
+        - /etc/ files are READ-ONLY (use O_RDONLY)
+        - Parent directories must exist (can't create /nonexistent/file)
+        - Don't mix contradictory flags (O_RDONLY | O_WRONLY is invalid)
+        - Only use the exact target syscall name provided: "{target}"
+
         For each scenario, provide:
         - id: A unique identifier (e.g., "t001", "t002")
         - description: What the test does
         - test_type: Type of test - use "{test_type}"
-        - target: The target name (e.g., "{target}")
+        - target: The target name - MUST BE EXACTLY "{target}"
         - params: JSON object with test parameters (path, flags, fd, count, etc.)
         - expected_result: "success" or "error"
         - expected_errno: The errno if error (e.g., "ENOENT"), or null if success
 
-        Focus on edge cases and potential bugs based on the documentation.
+        Focus on realistic edge cases that can actually be tested as a non-root user.
 
         Return ONLY a valid JSON array, no other text.
         Example format:
@@ -75,12 +82,13 @@ def generate_test_scenarios(
     content = response["message"]["content"]
 
     try:
-        if "```json" in content:
-            content = content.split("```json")[1].split("```")[0]
-        elif "```" in content:
-            content = content.split("```")[1].split("```")[0]
+        # The ollama adds extra text sometimes.
+        # We need to extract just the JSON array.
+        start_index = content.find('[')
+        end_index = content.rfind(']')
 
-        scenarios = json.loads(content.strip())
+        json_str = content[start_index : end_index + 1]
+        scenarios = json.loads(json_str)
         return scenarios
     except json.JSONDecodeError as e:
         print(f"Failed to parse LLM response as JSON: {e}")

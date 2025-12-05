@@ -58,7 +58,7 @@ def cmd_generate(args, config):
         return 0
 
     except Exception as e:
-        print(f"ERROR: Failed to generate scenarios: {e}")
+        print(f"ERROR: {e}")
         import traceback
 
         traceback.print_exc()
