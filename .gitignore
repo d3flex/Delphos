@@ -8,8 +8,8 @@ __pycache__/
 .pytest_cache/
 
 # Rust
-orchestrator/target/
-orchestrator/Cargo.lock
+delph/target/
+delph/Cargo.lock
 
 # Generated files
 scenarios.json

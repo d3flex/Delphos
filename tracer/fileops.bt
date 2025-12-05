@@ -2,7 +2,7 @@
 /*
  * Trace openat syscalls for a specific PID
  * Usage: sudo bpftrace fileops.bt PID
- * The orchestrator will pass its own PID when starting the trace
+ * The delph will pass its own PID when starting the trace
  */
 
 BEGIN {

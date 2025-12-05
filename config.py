@@ -9,7 +9,7 @@ class DelphosConfig:
     scenarios_file: Path = Path("test_scenarios.json")
     results_file: Path = Path("test_results.json")
     trace_log: Path = Path("trace.log")
-    orchestrator_dir: Path = Path("orchestrator")
+    delph_dir: Path = Path("delph-core")
     build_release: bool = False
 
     def __post_init__(self):
@@ -19,5 +19,5 @@ class DelphosConfig:
             self.results_file = Path(self.results_file)
         if isinstance(self.trace_log, str):
             self.trace_log = Path(self.trace_log)
-        if isinstance(self.orchestrator_dir, str):
-            self.orchestrator_dir = Path(self.orchestrator_dir)
+        if isinstance(self.delph_dir, str):
+            self.delph_dir = Path(self.delph_dir)

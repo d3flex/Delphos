@@ -45,7 +45,7 @@ delphos/
 │   ├── __init__.py
 │   ├── llm.py        # LLM integration
 │   ├── doc_parser.py 
-├── orchestrator/      # Test execution engine
+├── delph/      # Test execution engine
 │   ├── Cargo.toml
 │   ├── Cargo.lock
 │   └── src/
@@ -90,7 +90,7 @@ delphos/
    - Goal: Understand enough to read and modify simple Rust code
 
 4. Create basic project skeleton
-   - Cargo workspace setup: `cargo new orchestrator --bin`
+   - Cargo workspace setup: `cargo new delph --bin`
    - Python environment with uv: `uv venv` and `uv pip install ollama`
    - Create `pyproject.toml` for dependency management
    - Cargo.toml with dependencies
@@ -108,7 +108,7 @@ delphos/
 - First entry in `docs/daily_log.org`
 
 **Success Criteria:**
-- `cargo build` works in rust/orchestrator
+- `cargo build` works in rust/delph
 - `python --version` shows 3.10+
 - `uv --version` shows uv is installed
 - `ollama run llama3.1:8b` responds
@@ -279,7 +279,7 @@ delphos/
 
 2. Create minimal Rust test executor
    ```rust
-   // rust/orchestrator/src/main.rs
+   // rust/delph/src/main.rs
    use serde::{Deserialize, Serialize};
    use std::fs;
    
@@ -366,7 +366,7 @@ delphos/
 
 4. Test the executor
    ```bash
-   cd rust/orchestrator
+   cd rust/delph
    cargo build
    cargo run
    cat results.json
@@ -404,7 +404,7 @@ delphos/
    python python/main.py --syscall open --output scenarios.json
    
    echo "Step 2: Executing tests..."
-   cd rust/orchestrator && cargo run --quiet
+   cd rust/delph && cargo run --quiet
    cd ../..
    
    echo "Step 3: Results:"

@@ -1,25 +1,25 @@
-"""Runner for the Rust orchestrator."""
+"""Runner for the Rust delph."""
 
 import subprocess
 from pathlib import Path
 from typing import Optional
 
 
-class OrchestratorRunner:
-    """Manages building and running the Rust test orchestrator."""
+class Runner:
+    """Manages building and running the Rust test delph."""
 
-    def __init__(self, orchestrator_dir: Path, release: bool = False):
-        """Initialize orchestrator runner.
+    def __init__(self, delph_dir: Path, release: bool = False):
+        """Initialize delph runner.
 
         Args:
-            orchestrator_dir: Path to orchestrator directory
+            delph_dir: Path to delph directory
             release: Build in release mode
         """
-        self.orchestrator_dir = orchestrator_dir
+        self.delph_dir = delph_dir
         self.release = release
 
     def build(self) -> bool:
-        """Build the Rust orchestrator.
+        """Build the Rust delph.
 
         Returns:
             True if build succeeded, False otherwise
@@ -29,7 +29,7 @@ class OrchestratorRunner:
             cmd.append("--release")
 
         result = subprocess.run(
-            cmd, cwd=self.orchestrator_dir, capture_output=True, text=True
+            cmd, cwd=self.delph_dir, capture_output=True, text=True
         )
 
         if result.returncode != 0:
@@ -53,7 +53,7 @@ class OrchestratorRunner:
             cmd.insert(2, "--release")
 
         result = subprocess.run(
-            cmd, cwd=self.orchestrator_dir, capture_output=capture_output, text=True
+            cmd, cwd=self.delph_dir, capture_output=capture_output, text=True
         )
 
         if result.returncode != 0:

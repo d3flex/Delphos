@@ -80,14 +80,14 @@ python main.py run
 ```
 
 This will:
-- Build the Rust test orchestrator
+- Build the Rust test delph
 - Execute all test scenarios from `test_scenarios.json`
 - Save results to `test_results.json`
 - Display summary
 
 **Options:**
 - `--scenarios-file`: Custom scenarios file (default: `test_scenarios.json`)
-- `--release`: Build orchestrator in release mode
+- `--release`: Build delph in release mode
 - `--trace-log`: Path for trace log (default: `trace.log`)
 
 **Example:**

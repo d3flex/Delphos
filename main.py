@@ -7,7 +7,7 @@ from pathlib import Path
 from config import DelphosConfig
 from generator.llm import generate_test_scenarios
 from generator.scenarios import ScenarioManager
-from orchestrator_runner import OrchestratorRunner
+from delph_runner import Runner
 
 
 def cmd_generate(args, config):
@@ -75,17 +75,17 @@ def cmd_run(args, config):
         print("Run 'python main.py generate' first to generate test scenarios")
         return 1
 
-    orchestrator = OrchestratorRunner(config.orchestrator_dir, config.build_release)
+    delph = Runner(config.delph_dir, config.build_release)
 
-    print("[1/2] Building Rust orchestrator...")
-    if not orchestrator.build():
-        print("ERROR: Failed to build orchestrator")
+    print("[1/2] Building Rust delph...")
+    if not delph.build():
+        print("ERROR: Failed to build delph")
         return 1
-    print("✓ Orchestrator built successfully")
+    print("✓ delph built successfully")
     print()
 
     print("[2/2] Executing test scenarios...")
-    result = orchestrator.run(
+    result = delph.run(
         config.scenarios_file, config.results_file, capture_output=False
     )
 
@@ -147,7 +147,7 @@ def main():
         help="Path to scenarios file (default: test_scenarios.json)",
     )
     run_parser.add_argument(
-        "--release", action="store_true", help="Build orchestrator in release mode"
+        "--release", action="store_true", help="Build delph in release mode"
     )
     run_parser.add_argument(
         "--trace-log",

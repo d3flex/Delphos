@@ -1,5 +1,5 @@
 [package]
-name = "delphos-orchestrator"
+name = "delph-core"
 version = "0.1.0"
 edition = "2021" # "2024" also available but 2021 more tutorials??!
  
